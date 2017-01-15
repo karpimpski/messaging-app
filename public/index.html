@@ -8,16 +8,17 @@
   </head>
   <body>
     <div id='login'>
-      <h1>Choose a name</h1>
+      <p>Choose a name</p>
       <form id='username'>
-        <input id='name' />
+        <input type='text' id='name' autocomplete='off'/>
+        <input type='submit' value='Enter'/>
       </form>
     </div>
     <div id='chat' class='hidden'>
       <ul id="messages"></ul>
-      <span id="notifyUser">PLACEHOLDER</span>
+      <span id="notifyUser"></span>
       <form id="form" > 
-        <input type="hidden" id="user" value="" /><input id="m" autocomplete="off" onkeyup="notifyTyping();" placeholder="Type your message.." /><input type="submit" id="button" value="Send"/> 
+        <input type="hidden" id="user" value="" /><input id="m" type='text' autocomplete="off" onkeyup="notifyTyping();" placeholder="Type your message.." /><input type="submit" id="button" value="Send"/> 
       </form>
     </div>
     <script src="main.js"></script>
