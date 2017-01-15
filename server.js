@@ -40,7 +40,7 @@ io.on('connection', function(socket){
 		mongo.connect(url, function(err, db){
 			db.collection('users').remove({name: name});
 		})
-		io.emit('chatMessage', 'System', `${name} has disconnected.`);
+		io.emit('chatMessage', 'System', `<b>${name}</b> has disconnected.`);
 		console.log(socket + ' disconnected');
 	});
 });
