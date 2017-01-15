@@ -6,12 +6,17 @@
     <script src="https://cdn.socket.io/socket.io-1.2.0.js"></script>
     
   </head>
-  <body> 
-    <ul id="messages"></ul>
-    <span id="notifyUser">PLACEHOLDER</span>
-    <form id="form" > 
-      <input type="hidden" id="user" value="" /><input id="m" autocomplete="off" onkeyup="notifyTyping();" placeholder="Type your message.." /><input type="submit" id="button" value="Send"/> 
-    </form>
+  <body>
+    <div id='login'>
+
+    </div>
+    <div id='chat'>
+      <ul id="messages"></ul>
+      <span id="notifyUser">PLACEHOLDER</span>
+      <form id="form" > 
+        <input type="hidden" id="user" value="" /><input id="m" autocomplete="off" onkeyup="notifyTyping();" placeholder="Type your message.." /><input type="submit" id="button" value="Send"/> 
+      </form>
+    </div>
     <script src="main.js"></script>
   </body>
 </html>
