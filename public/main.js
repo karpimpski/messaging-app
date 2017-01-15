@@ -15,6 +15,9 @@ document.getElementById('username').addEventListener('submit', function(e){
       if(res == null){
         enter(name);
       }
+      else{
+        alert('Sorry! That name is already taken.');
+      }
     }
   };
   xhttp.open("GET", "/api/user/" + name, true);
