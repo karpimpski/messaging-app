@@ -36,8 +36,14 @@ socket.on('notifyUser', function(user){
   var me = userEl.value;
   if(user != me) {
     notifyUser.innerHTML = user + ' is typing ...';
+    notifyUser.classList.add('active');
   }
-  setTimeout(function(){ notifyUser.innerHTML = ''; }, 10000);;
+  setTimeout(function(){ 
+  	notifyUser.classList.remove('active');
+  	setTimeout(function(){
+  		notifyUser.innerHTML = '';
+  	}, 500)
+  }, 10000);;
 });
 
 function makeid() {
