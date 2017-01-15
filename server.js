@@ -5,6 +5,9 @@ var io = require('socket.io')(http);
 var mongo = require('mongodb').MongoClient;
 var url = process.env.DB_URI;
 
+var clients = [];
+var names = [];
+
 app.get('/', function(req, res){
 	app.use(express.static(__dirname + '/public'));
 	res.sendFile(__dirname + '/public/index.html');
@@ -12,7 +15,10 @@ app.get('/', function(req, res){
 
 io.on('connection', function(socket){
 	console.log('user connected');
+	clients.push(socket);
+
 	socket.on('newUser', function(name){
+		names.push(name);
 		mongo.connect(url, function(err, db){
 			db.collection('users').insert({name: name});
 		});
@@ -27,9 +33,14 @@ io.on('connection', function(socket){
 	});
 
 	socket.on('disconnect', function(){
+		var index = clients.indexOf(socket);
+		var name = names[index];
+		clients.splice(index, 1);
+		names.splice(index, 1);
 		mongo.connect(url, function(err, db){
 			db.collection('users').remove({name: name});
 		})
+		io.emit('chatMessage', 'System', `${name} has disconnected.`);
 		console.log(socket + ' disconnected');
 	});
 });

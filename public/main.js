@@ -5,8 +5,6 @@ var m = document.getElementById('m');
 var messages = document.getElementById('messages');
 var notifyUser = document.getElementById('notifyUser');
 
-
-
 document.getElementById('username').addEventListener('submit', function(e){
   e.preventDefault();
   var name = document.getElementById('name').value;
@@ -29,6 +27,7 @@ function enter(name){
   userEl.value = name;
   socket = io();
   socket.emit('newUser', name);
+  socket.emit('chatMessage', 'System', '<b>' + name + '</b> has joined the discussion');
   setSocketListeners();
 }
 
