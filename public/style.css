@@ -62,3 +62,7 @@ form #button:hover{
 #notifyUser.active{
 	bottom: 42px;
 }
+
+.hidden{
+	display: none;
+}
