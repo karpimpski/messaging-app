@@ -4,8 +4,6 @@ var http = require('http').Server(app);
 var io = require('socket.io')(http);
 var mongo = require('mongodb').MongoClient;
 var url = process.env.DB_URI;
-
-var clients = [];
 var names = [];
 
 app.get('/', function(req, res){
@@ -14,8 +12,8 @@ app.get('/', function(req, res){
 });
 
 io.on('connection', function(socket){
-	console.log('user connected');
-	clients.push(socket);
+	var socketName = socket.request._query['name'];
+	console.log(socketName + ' connected');
 
 	socket.on('newUser', function(name){
 		names.push(name);
@@ -33,9 +31,8 @@ io.on('connection', function(socket){
 	});
 
 	socket.on('disconnect', function(){
-		var index = clients.indexOf(socket);
+		var index = names.indexOf(socketName);
 		var name = names[index];
-		clients.splice(index, 1);
 		names.splice(index, 1);
 		mongo.connect(url, function(err, db){
 			db.collection('users').remove({name: name});

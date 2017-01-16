@@ -28,7 +28,7 @@ function enter(name){
   document.getElementById('login').classList.add('hidden');
   document.getElementById('chat').classList.remove('hidden');
   userEl.value = name;
-  socket = io();
+  socket = io({query: 'name=' + name});
   socket.emit('newUser', name);
   socket.emit('chatMessage', 'System', '<b>' + name + '</b> has joined the discussion');
   setSocketListeners();
