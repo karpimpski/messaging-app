@@ -12,10 +12,11 @@ app.get('/', function(req, res){
 });
 
 io.on('connection', function(socket){
-	var socketName = socket.request._query['name'];
-	console.log(socketName + ' connected');
+	var socketName;
 
 	socket.on('newUser', function(name){
+		socketName = socket.request._query['name'];
+		console.log(name + ' connected');
 		names.push(name);
 		mongo.connect(url, function(err, db){
 			db.collection('users').insert({name: name});
@@ -32,13 +33,12 @@ io.on('connection', function(socket){
 
 	socket.on('disconnect', function(){
 		var index = names.indexOf(socketName);
-		var name = names[index];
 		names.splice(index, 1);
 		mongo.connect(url, function(err, db){
-			db.collection('users').remove({name: name});
+			db.collection('users').remove({name: socketName});
 		})
-		io.emit('chatMessage', 'System', `<b>${name}</b> has disconnected.`);
-		console.log(socket + ' disconnected');
+		io.emit('chatMessage', 'System', `<b>${socketName}</b> has disconnected.`);
+		console.log(socketName + ' disconnected');
 	});
 });
 
