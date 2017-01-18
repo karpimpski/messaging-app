@@ -14,13 +14,21 @@ app.get('/', function(req, res){
 
 io.on('connection', function(socket){
 	var socketName;
+	var seconds = 0;
+	var interval = setInterval(function(){
+		seconds += 1;
+		if(seconds >= 3600){
+			clearInterval(interval);
+			disconnect();
+		}
+	}, 1000);
 
 	socket.on('newUser', function(name){
-		socketName = socket.request._query['name'];
-		console.log(name + ' connected');
-		names.push(name);
+		socket.name = name;
+		console.log(socket.name + ' connected');
+		names.push(socket.name);
 		mongo.connect(url, function(err, db){
-			db.collection('users').insert({name: name});
+			db.collection('users').insert({name: socket.name});
 		});
 	});
 
@@ -33,14 +41,19 @@ io.on('connection', function(socket){
 	});
 
 	socket.on('disconnect', function(){
-		var index = names.indexOf(socketName);
+		disconnect();
+	});
+
+	function disconnect(){
+		var index = names.indexOf(socket.name);
 		names.splice(index, 1);
 		mongo.connect(url, function(err, db){
-			db.collection('users').remove({name: socketName});
+			db.collection('users').remove({name: socket.name});
 		})
-		io.emit('chatMessage', 'System', `<b>${socketName}</b> has disconnected.`);
-		console.log(socketName + ' disconnected');
-	});
+		io.emit('chatMessage', 'System', `<b>${socket.name}</b> has disconnected.`);
+		console.log(socket.name + ' disconnected');
+		socket.disconnect();
+	}
 });
 
 app.get('/api/user/:user', function(req, res){
