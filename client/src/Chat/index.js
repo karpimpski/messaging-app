@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import io from 'socket.io-client';
 import ReactHtmlParser from 'react-html-parser';
+import Client from '../Client.js';
 
 class Chat extends Component {
   constructor(props){
@@ -41,12 +42,25 @@ class Chat extends Component {
     }
     else{
       var message = e.target.message.value;
-      if(message !== ''){
+      if(message.substr(0,4) == '/cmd'){
+        this.command(message.slice(5));
+      }
+      else if(message !== ''){
         this.state.socket.emit('chatMessage', this.state.name, message);
       }
       e.target.message.value = '';
     }
     return false;
+  }
+
+  command(cmd){
+    if(cmd == 'list'){
+      Client.get('/api/users', function(res){
+        res.forEach(function(user){
+          console.log(user.name);
+        })
+      });
+    }
   }
 
   render() {

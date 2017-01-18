@@ -61,6 +61,14 @@ app.get('/api/user/:user', function(req, res){
 	});
 });
 
+app.get('/api/users', function(req, res){
+	mongo.connect(url, function(err, db){
+		db.collection('users').find({}, {_id: 0}).toArray(function(err, docs){
+			res.end(JSON.stringify(docs));
+		});
+	})
+})
+
 app.get('*', function(req, res){
 	res.sendFile(__dirname + '/client/build/index.html');
 })

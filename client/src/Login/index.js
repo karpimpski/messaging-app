@@ -1,26 +1,20 @@
 import React, { Component } from 'react';
 import Chat from '../Chat';
 import ReactDOM from 'react-dom';
+import Client from '../Client.js';
 
 class Login extends Component {
   submit(e){
     e.preventDefault();
     var name = document.getElementById('name').value;
-    var xhttp = new XMLHttpRequest();
-    xhttp.onreadystatechange = function() {
-      if (this.readyState === 4 && this.status === 200) {
-        var res = JSON.parse(xhttp.responseText);
-        if(res == null){
-          ReactDOM.render(<Chat name={name}/>, document.getElementById('root'));
-        }
-        else{
-          alert('Sorry! That name is already taken.');
-        }
+    Client.get('/api/user/' + name, function(data){
+      if(data == null){
+        ReactDOM.render(<Chat name={name}/>, document.getElementById('root'));
       }
-    };
-    xhttp.open("GET", "/api/user/" + name, true);
-    xhttp.send();
-    
+      else{
+        alert('Sorry! That name is already taken.');
+      }
+    });
   }
 
   render(){
