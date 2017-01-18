@@ -65,6 +65,6 @@ app.get('*', function(req, res){
 	res.sendFile(__dirname + '/client/build/index.html');
 })
 
-http.listen(port, function(){
+http.listen(process.env.PORT, function(){
   
 });
