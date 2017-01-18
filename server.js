@@ -30,6 +30,7 @@ io.on('connection', function(socket){
 	});
 
 	socket.on('chatMessage', function(from, msg){
+		if(from == socket.name){seconds = 0; console.log(seconds)}
 		io.emit('chatMessage', from, msg);
 	});
 
