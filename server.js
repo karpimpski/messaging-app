@@ -5,6 +5,7 @@ var io = require('socket.io')(http);
 var mongo = require('mongodb').MongoClient;
 var url = process.env.DB_URI;
 var names = [];
+var port = (process.argv[2]) ? process.argv[2] : process.env.PORT;
 
 app.get('/', function(req, res){
 	app.use(express.static(__dirname + '/public'));
@@ -50,6 +51,6 @@ app.get('/api/user/:user', function(req, res){
 	});
 });
 
-http.listen(process.env.PORT, function(){
+http.listen(port, function(){
   
 });

@@ -5,7 +5,9 @@
   "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node server"
+    "start": "node server",
+    "production": "node server 3000",
+    "dev": "concurrently \"node server 3001\" \"cd client && npm start\""
   },
   "author": "Michael Karpinski",
   "license": "ISC",
