@@ -55,10 +55,9 @@ class Chat extends Component {
 
   command(cmd){
     if(cmd == 'list'){
-      Client.get('/api/users', function(res){
-        res.forEach(function(user){
-          console.log(user.name);
-        })
+      Client.get('/api/users', (res) => {
+        var arr = res.map( user => user.name);
+        this.setState({messages: this.state.messages.concat({from: 'System', message: 'Online users: ' + arr.join(', ')})})
       });
     }
   }
