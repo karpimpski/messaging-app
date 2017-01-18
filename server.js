@@ -7,10 +7,7 @@ var url = process.env.DB_URI;
 var names = [];
 var port = (process.argv[2]) ? process.argv[2] : process.env.PORT;
 
-app.get('/', function(req, res){
-	app.use(express.static(__dirname + '/public'));
-	res.sendFile(__dirname + '/public/index.html');
-});
+app.use(express.static('client/build'));
 
 io.on('connection', function(socket){
 	var socketName;
@@ -63,6 +60,10 @@ app.get('/api/user/:user', function(req, res){
 		});
 	});
 });
+
+app.get('*', function(req, res){
+	res.sendFile(__dirname + '/client/build/index.html');
+})
 
 http.listen(port, function(){
   

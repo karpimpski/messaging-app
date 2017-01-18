@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import io from 'socket.io-client';
+import ReactHtmlParser from 'react-html-parser';
 
 class Chat extends Component {
   constructor(props){
@@ -20,7 +21,8 @@ class Chat extends Component {
 
   setListeners(){
     this.state.socket.on('chatMessage', (from, msg) => {
-      this.setState({messages: this.state.messages.concat(msg)});
+      var obj = {from: from, message: msg};
+      this.setState({messages: this.state.messages.concat(obj)});
     });
     this.state.socket.on('notifyUser', (user) => {
       if(user !== this.state.name) {
@@ -51,8 +53,11 @@ class Chat extends Component {
     return (
       <div id="chat">
         <ul id="messages">
-          {this.state.messages.map(function(message, index){
-            return <li key={index}>{message}</li>
+          {this.state.messages.map((message, index) => {
+            message.from === this.state.name ? message.from = 'me' : message.from = message.from;
+            var color = (message.from == 'me') ? 'green' : '#009afd';
+            var style = {color: color}
+            return <li key={index}><b style={style}>{message.from}:</b> {ReactHtmlParser(message.message)}</li>
           })}
         </ul>
       <span id="notifyUser">{this.state.userTyping ? `${this.state.userTyping} is typing a message...` : ''}</span>
