@@ -8,7 +8,7 @@ class Login extends Component {
     e.preventDefault();
     var name = document.getElementById('name').value;
     Client.get('/api/user/' + name, function(data){
-      if(data == null){
+      if(!data){
         ReactDOM.render(<Chat name={name}/>, document.getElementById('root'));
       }
       else{
